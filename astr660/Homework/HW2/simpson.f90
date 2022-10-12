@@ -6,17 +6,17 @@ program pi
     integer :: i, N
     real, parameter :: test_pi = 4.0*atan(1.0)
     real :: error, area, log_error, log_n, x_four
-    integer, parameter :: NMAX=8	
+    integer, parameter :: NMAX=10	
     integer, dimension(NMAX) :: n_iteration
       
 
 
     !---  set up N
-    n_iteration = (/10,100,1000,10000,100000,1000000,10000000,100000000/)
+    n_iteration = (/10,100,1000,10000,100000,1000000,10000000,100000000,1000000000,10000000000/)
 
     !--- open a file to store the error
     !--- open(u), where u is a valid unit number specifier
-    open(unit=11, file="error1_simpson.dat")
+    open(unit=11, file="error2_simpson.dat")
 
     !--- write the header
     !--- [unit=]: unit number; [FMT=] format-spec 
@@ -39,8 +39,8 @@ program pi
  
     
 
-100 format(a2, a8, 2a24, 2a24, 2a24, 2a24)
-200 format(2x, i8, 2F24.14, 2F24.14, 2F24.14, 2F24.14) 
+100 format(a2, a12, 2a24, 2a24, 2a24, 2a24)
+200 format(2x, i12, 2F24.14, 2F24.14, 2F24.14, 2F24.14) 
 
     close(11)     
 
@@ -61,10 +61,10 @@ subroutine compute_integral(N,A)
 
     do i = 1, N
   
-       x = -1 - (1/real(N)) + dx*real(i)
        x_a = -1 + dx*real(i-1)
+       x = -1 - (1/N) + dx*real(i)
        x_b = -1 + dx*real(i)
-       h = (1/6)*my_func(x_a) + (1/6)*my_func(x_b) + (2/3)*my_func(x) 
+       h = (1./6.)*my_func(x_a) + (1./6.)*my_func(x_b) + (2./3.)*my_func(x) 
        dA= dx * h
        A = A + dA
 

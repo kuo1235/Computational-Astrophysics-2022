@@ -6,17 +6,17 @@ program pi
     integer :: i, N
     real, parameter :: test_pi = 4.0*atan(1.0)
     real :: error, area, log_error, log_n, x_square
-    integer, parameter :: NMAX=10	
+    integer, parameter :: NMAX=8	
     integer, dimension(NMAX) :: n_iteration
       
 
 
     !---  set up N
-    n_iteration = (/10,100,1000,10000,100000,1000000,10000000,100000000,1000000000,10000000000/)
+    n_iteration = (/10,100,1000,10000,100000,1000000,10000000,100000000/)
 
     !--- open a file to store the error
     !--- open(u), where u is a valid unit number specifier
-    open(unit=11, file="error2.dat")
+    open(unit=11, file="error1_trape.dat")
 
     !--- write the header
     !--- [unit=]: unit number; [FMT=] format-spec 
@@ -52,7 +52,7 @@ subroutine compute_integral(N,A)
     integer, intent(in)::N
     real, intent(out) :: A
 
-    real :: x, dx, h, dA 
+    real :: x_a, x_b, dx, h, dA 
     real :: my_func
     integer :: i
 
@@ -61,8 +61,9 @@ subroutine compute_integral(N,A)
 
     do i = 1, N
 
-       x = -1 - 1/N + dx*real(i)
-       h = my_func(x)
+       x_a = -1 + dx*real(i-1) 
+       x_b = -1 + dx*real(i)
+       h = (my_func(x_a)+my_func(x_b))/2.
        dA= dx * h
        A = A + dA
 
@@ -72,7 +73,7 @@ subroutine compute_integral(N,A)
 
 end subroutine compute_integral
 
-    real function  my_func(x)
+real function  my_func(x)
     real :: x
     my_func = sqrt(1.0-x**2)
     return

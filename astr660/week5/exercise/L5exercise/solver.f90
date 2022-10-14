@@ -71,12 +71,12 @@ module solver
         dfdx = dfunc(x) 
 
 
-        if (sign(1.0,fx) .gt. 0.) then
+        !if (sign(1.0,fx) .gt. 0.) then  --- do not need this line
 
         x = x - fx/dfdx
         xs = x
 
-        end if
+        !end if
         
         err = abs(fx)
 
@@ -109,13 +109,9 @@ module solver
         fx0 = func(x0)
         fx1 = func(x1)
 
-        if (sign(1.0, fx1) .eq. sign(1.0, fx0)) then              
-            x1 = x1 - fx1/((fx1-fx0)/(x1-x0))
-            xs = x1
-        else 
-            x0 = x0 - fx0/((fx1-fx0)/(x1-x0))
-            xs = x0
-        end if
+        xs = x1 - fx1/((fx1-fx0)/(x1-x0))
+        x0 = x1
+        x1 = xs 
 
         err = abs(func(xs))
     

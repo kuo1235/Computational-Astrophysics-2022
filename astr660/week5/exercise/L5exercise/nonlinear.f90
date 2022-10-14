@@ -26,9 +26,9 @@ program nonlinear
     real, external :: my_dfunc            ! the d function to solve
 
     ! output file name
-    fname = "bisection.txt"
+    !fname = "bisection.txt"
     !fname = "newton.txt"
-    !fname = "secant.txt"
+    fname = "secant.txt"
 
     open(unit=1,file=trim(fname))
     ! write the header
@@ -39,9 +39,9 @@ program nonlinear
     error = 1e99
 
     do while (error > eps)
-        call bisection(my_func, xs, error)
+        !call bisection(my_func, xs, error)
         !call newton(my_func, my_dfunc, xs, error)
-        !call secant(my_func, xs, error)
+        call secant(my_func, xs, error)
         
         log_error = log10(error)
 

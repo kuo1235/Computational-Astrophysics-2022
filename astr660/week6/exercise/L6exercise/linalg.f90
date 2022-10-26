@@ -128,13 +128,9 @@ module linalg
             real, dimension(N,N) :: L, U, P
             real, dimension(N)   :: y, pb
             
-            !A(1,1)=2.
-            !A(1,2)=4.
-            !A(1,3)=-2.
-         
-
-
-
+            call LU_decomposition(N,A,L,U)
+            call solve_lower_triangular_matrix(N,L,b,y)
+            call solve_upper_triangular_matrix(N,U,y,x)
 
         end subroutine solve_lu
 

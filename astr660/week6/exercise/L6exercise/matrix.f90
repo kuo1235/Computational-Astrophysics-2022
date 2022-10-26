@@ -59,9 +59,9 @@ program linear
     A(3,2) =  8.0
     A(3,3) = 10.0
     ! the vectore b
-    b(1) =  3.0
-    b(2) =  -6.0
-    b(3) =  1.0
+    b(1) =  4.0
+    b(2) =  6.0
+    b(3) =  10.0
 
     !call solve_lower_triangular_matrix(N,lower,b,x)
     !call solve_upper_triangular_matrix(N,upper,b,x)
@@ -73,11 +73,11 @@ program linear
     !call mat_print("U",upper)
     call mat_print("A", A)
 
-    !print *, "vector   b = ",b
-    !print *, "solution x = ",x
+    print *, "vector   b = ",b
+    print *, "solution x = ",x
     
-    call mat_print("L", lower)
-    call mat_print("U", upper)
+    !call mat_print("L", lower)
+    !call mat_print("U", upper)
 
 end program linear 
 

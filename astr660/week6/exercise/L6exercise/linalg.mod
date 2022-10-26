@@ -1,5 +1,5 @@
 GFORTRAN module version '10' created from linalg.f90
-MD5:3d70eb2c9f4ed51498ed41e7ff13293e -- If you edit this, you'll get what you deserve.
+MD5:521655d797c8057d42e84a468bd21b70 -- If you edit this, you'll get what you deserve.
 
 (() () () () () () () () () () () () () () () () () () () () () () () ()
 () () ())
@@ -88,8 +88,8 @@ UNKNOWN 0 0 SUBROUTINE ALWAYS_EXPLICIT) (UNKNOWN 0 0 0 0 UNKNOWN ()) 39
 UNKNOWN-INTENT MODULE-PROC DECL UNKNOWN 0 0 SUBROUTINE) (UNKNOWN 0 0 0 0
 UNKNOWN ()) 43 0 (44 45 46 47) () 0 () () () 0 0)
 48 'solve_lu' 'linalg' '' 1 ((PROCEDURE UNKNOWN-INTENT MODULE-PROC DECL
-UNKNOWN 0 0 SUBROUTINE IMPLICIT_PURE) (UNKNOWN 0 0 0 0 UNKNOWN ()) 49 0
-(50 51 52 53) () 0 () () () 0 0)
+UNKNOWN 0 0 SUBROUTINE) (UNKNOWN 0 0 0 0 UNKNOWN ()) 49 0 (50 51 52 53)
+() 0 () () () 0 0)
 54 'solve_upper_triangular_matrix' 'linalg' '' 1 ((PROCEDURE
 UNKNOWN-INTENT MODULE-PROC DECL UNKNOWN 0 0 SUBROUTINE) (UNKNOWN 0 0 0 0
 UNKNOWN ()) 55 0 (56 57 58 59) () 0 () () () 0 0)

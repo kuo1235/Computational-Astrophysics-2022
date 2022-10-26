@@ -87,6 +87,34 @@ module linalg
             real, dimension(N,N) :: M, As
  
             integer :: i,j,k
+             
+            forall (j=1:N, i=1:N)
+                L(i,j)=merge(1.0,0.0,i==j) ! if i=j, output:1, otherwise:0 -> creating identity matrix
+                U(i,j)=0.0
+            end forall
+
+            As = A
+            
+            do k = 1,n-1
+                if (As(k,k)==0.) then
+                    stop
+                end if
+                
+                do i = k+1,n
+                    M(i,k)=As(i,k)/As(k,k)
+                enddo
+
+                do j = k+1,n
+                    do i = k+1, n
+                        As(i,j)=As(i,j)-M(i,k)*As(k,j)
+                    enddo
+                enddo                 
+            enddo
+
+            do i = 1, N
+                L(i, :i-1) = M(i, :i-1)
+                U(i,i: ) = As(i,i: ) 
+            enddo
 
         end subroutine LU_decomposition
 
@@ -99,6 +127,14 @@ module linalg
 
             real, dimension(N,N) :: L, U, P
             real, dimension(N)   :: y, pb
+            
+            !A(1,1)=2.
+            !A(1,2)=4.
+            !A(1,3)=-2.
+         
+
+
+
 
         end subroutine solve_lu
 

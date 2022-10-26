@@ -73,30 +73,47 @@ By the way, for {\color{blue}{Newton-Raphson's method}}, if our initial guess is
 
 
 \section{Exercise 5}
-(1)
-To find the optimal $h$ which minimize the total error (64-bit):
-\begin{equation}
-\epsilon_{tot}=\epsilon_{tr}+\epsilon_{ro} \approx \frac{f^{(2)}}{2} h + \frac{\epsilon_{m}}{h}
-\end{equation}
+(1)(2)(3) I have finished the subroutine $LU \_ decomposition$ in $linalg.f90$ and the  \href{https://github.com/kuo1235/Computational-Astrophysics-2022/blob/main/astr660/week6/exercise/L6exercise/linalg.f90}{\bf{git gub link is here}}, put two different matrix $A$ from in-class exercise and Exercise 4, the result is the following figures: 
+\begin{figure}[htbp]
+\centering
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\includegraphics[width=6cm]{EX5_1}
+\caption{Ex5-1 result}
+\end{minipage}
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\includegraphics[width=6cm]{EX5_2}
+\caption{Ex5-2 result}
+\end{minipage}
+\end{figure}
 
-Since $f^{(2)} \approx 1$, so after differentiation we find that \textcolor{blue}{\bf{when $h \approx 4.47 \times 10^{-8}$}} \\
+Next, further call $solve \_ lower \& upper \_ triangular \_ matrix$, we can get the soltion $x$ as the following figure, and the result indeed meets my answer in Exercise 4.
 
-(2)
-To find the optimal $h$ which minimize the total error of (64-bit) of {\bf{the central-difference algorithm}}:
-\begin{equation}
-\epsilon_{tot}=\epsilon_{tr}+\epsilon_{ro} \approx \frac{f^{(3)}}{24} h^2 + \frac{\epsilon_{m}}{h}
-\end{equation}
-
-Since $f^{(3)} \approx 1$, so after differentiation we find that \textcolor{blue}{\bf{when $h \approx 2.29 \times 10^{-5}$}} \\
-
-(3)Put the optimal h back, we can get the minimal total error for both method, $4.47 \times 10^{-8}$ and $6.55 \times 10^{-11}$ for method 1 and method 2 respectively, {\textcolor{blue}{so method 2 is better behaved}}, also the step size $h$ is smaller for method 2.
-
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{EX5_3}
+	\caption{Ex5-3 result}
+\end{figure}
 \section{Exercise 6}
-(1) I choose python to do the work and the step size $h=0.1$ for this question, and the \href{https://github.com/kuo1235/Computational-Astrophysics-2022/blob/main/astr660/Homework/HW2/Exercise6.py
-}{\bf{git gub link is here}} with the result FIG. 10 and FIG. 11, however \textcolor{red}{I have not come up with the answer when $x=100$}\\ 
+(1) I build up the code $Ex6 \_ 1$ \href{https://github.com/kuo1235/Computational-Astrophysics-2022/blob/main/astr660/Homework/HW3/EX6/EX6_1.py}{\bf{link here}} to build up matrix $A$ and using $linalg \_ lu.solve$ to get the value x, see FIG. 6. 
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{EX6_1}
+	\caption{Ex6-1 (a portion of) x}
+\end{figure}
+
+(2) using another method $scipy.linalg.solve_banded$ and the code $Ex6 \_ 2$ \href{https://github.com/kuo1235/Computational-Astrophysics-2022/blob/main/astr660/Homework/HW3/EX6/EX6_2.py}{\bf{link here}}, we can get same $x$ as from Ex6-1.
+
+For the computing time, I use $timeit$ as my tool monitoring the running time and FIG. 7. is the result. LU decomposition costs about $1.74ms$, and bandmatrix method cost only about $542 \mu s$ 
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{EX6_2}
+	\caption{Ex6-2 Computing time}
+\end{figure}
 
 
-(2)
+(3)By using $np.linalg.cond$, the condition number of matrix A is about $130661079.52047908$ 
 
 
 \bibliographystyle{apsrev}

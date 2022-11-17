@@ -1,32 +1,44 @@
+'''
+This code is used to calculate pi using Monte Carlo method.
+Author: Lin Yen-Hsing (NTHU) 2022.10.07
+'''
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
 
-def circle_function(x):
-    y = np.sqrt(1. - x**2)
 
-    return y
+def cal_pi(N):
+    np.random.seed(111)
+    x = np.random.random(N)
+    np.random.seed(222)
+    y = np.random.random(N)
+    r = np.sqrt(x**2 + y**2)
+/cluster/home/yhkuo/Computational-Astrophysics-2022/astr660/Homework/HW2/    PI = np.sum(r<1)/np.shape(r)[0]*4
+    print(PI)
+    return PI
 
-def monte_carlo(seed1, seed2, a, b, N):
+def err(N):
+    ERR = abs((cal_pi(N) - np.pi)/np.pi)
+    return ERR
 
-    np.random.seed(seed1)                      #  
-    sample_x = a + (b-a) * np.random.rand(N)   #
-                                               #
-    np.random.seed(seed2)                      #
-    sample_y = np.random.rand(N)               #Construct random point (x, y)
-    
-    function_y = circle_function(sample_x)     #y for the real circle
-       
-    count = 0
-    
-    for i in range(N):
-        if (function_y[i] >= sample_y[i]):
-            count += 1
-  
-    answer = (count / N) * (b-a)**2
-    
-    return answer
+def expect(N,a):
+    return a/np.sqrt(N)
 
-print(monte_carlo(1000, 10000, -1, 1, 10000))
+N = np.logspace(1, 7, 20).astype(int)    #np.logspace(start, stop, number of sample)
+Errs = list(map(err, N))                 #map(function, iterable) 
+
+popt, pcov = curve_fit(expect, N, Errs)  # curve.fit(function, xdata, ydata), returns  
+
+plt.loglog(N, Errs, label='Simulated data', linestyle='solid')                              # Make a plot with log scaling on both the x and y axis 
+plt.loglog(N, expect(N, popt[0]), label='Expected $1/\sqrt{N}$ law', linestyle='dashedZZ')
+
+plt.xlabel('$N$')
+plt.ylabel('$\epsilon$')
+plt.legend()
+plt.tight_layout()                   #Adjust the location of axes/labels/titles
+plt.savefig('pi_MC.png', dpi=300)
+
+plt.show()
 
 
 

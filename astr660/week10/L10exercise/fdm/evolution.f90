@@ -42,8 +42,8 @@ subroutine update(time, dt)
 
     do i = istart, iend
 
-       u(i) = uold(i) - c * (dt/dx) * (uold(i)-uold(i-1))            !  the upwind methods 
-       !u(i) = uold(i) - c * (dt/dx) * 0.5  * (uold(i+1)-uold(i-1))    ! the FTCS methods 
+       !u(i) = uold(i) - c * (dt/dx) * (uold(i)-uold(i-1))            !  the upwind methods 
+       u(i) = uold(i) - c * (dt/dx) * 0.5  * (uold(i+1)-uold(i-1))    ! the FTCS methods 
 
     enddo
 

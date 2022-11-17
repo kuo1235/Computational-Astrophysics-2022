@@ -10,7 +10,7 @@ module Simulation_data
     real, parameter  :: xmax     = 1.0   ! right position
     real, parameter  :: tend     = 0.7   ! final time
 
-    real, parameter  :: cfl      = 1.2   ! cfl number
+    real, parameter  :: cfl      = 0.4   ! cfl number
     real, save       :: dx
 
     real, dimension(istart-ibuf:iend+ibuf), save :: u, uold, x

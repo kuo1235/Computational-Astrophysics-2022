@@ -75,7 +75,7 @@ module Solver
         real, save :: b = 30.0        ! bracking interval [a,b]
         real  :: fa, fx              ! f(a) and f(x)
            
-        xs = (a+b)/2.        
+        xs = (a+b)/2.0        
                 
         fa = func(a)
         fx = func(xs)

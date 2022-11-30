@@ -14,7 +14,7 @@ module Simulation_data
         real :: ay
     end type Star
 
-    type(Star), dimension(N) :: stars
+    type(Star), dimension(N) :: stars, stars2, stars3, stars4
     real :: separation
     real :: period
 

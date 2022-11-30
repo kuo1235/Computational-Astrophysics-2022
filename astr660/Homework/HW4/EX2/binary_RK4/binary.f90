@@ -25,7 +25,7 @@ program binary
 
     ! initial setup
     step     = 0             ! start from 0th step
-    dt       = 0.00001 * yr  ! sec, time step
+    dt       = 0.01 * yr  ! sec, time step
     time     = 0.0           ! sec, start from t=0
     tmax     = 10.0 * yr     ! sec, max simulation time
 

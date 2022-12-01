@@ -32,7 +32,7 @@ plt.plot(D8['x'], D8['U(x)'], label='n=8', color='C4', alpha=0.2)
 
 
 #plt.title('Upwind method, CFL=1.2')
-plt.title('Arithmetic average method')
+plt.title('PLM')
 #plt.title('Lax-Friedrich Method')
 plt.xlabel('x')
 plt.ylabel('u(x)')

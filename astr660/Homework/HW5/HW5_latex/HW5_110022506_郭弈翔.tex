@@ -1,0 +1,70 @@
+\documentclass[aps,12pt,prd,nofootinbib,bibnotes, amsmath,amssymb,showpacs,superscriptaddress,floatfix]{revtex4-2}
+\bibliographystyle{apsrev}
+\usepackage[utf8]{inputenc}
+\usepackage{epsf,epsfig,graphics}
+\usepackage{graphicx,amsmath,mathrsfs,amssymb, amsthm,nccbbb,cancel,xcolor,wrapfig,siunitx,longtable,tabularx,CJKutf8,subfigure,float,xspace,physics,esvect,braket,enumitem,url,makeidx}
+\usepackage{verbatim,color,ulem}
+\usepackage{bm}
+\usepackage[mathscr]{eucal}
+\usepackage{hyperref}
+\usepackage[toc,page]{appendix}
+\usepackage[hang, flushmargin]{footmisc}
+\usepackage{footnotebackref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\title{Computational Astrophysics HW5}
+\author{Yi-Hsiang Kuo, 110022506}
+\date{Dec. 8, 2022}
+\maketitle
+%\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Exercise 1}
+(1) The Sun: \\
+with $T \approx 10^7 K$, $n \approx 10^{26} cm^{-3}$, the mean free path $\lambda_{sun} \approx 10^{-6} cm$, compared to the size of system $L \approx 6.96 \times 10^{10} cm$, the result shows that it \textcolor{blue}{can} be described as a fluid.\\ 
+
+(2) Solar wind: \\
+with $T \approx 10^5 K$, $n \approx 10^1 cm^{-3}$, the mean free path $\lambda_{solar wind} \approx 10^{15} cm$, compared to the size of system $L \approx 1.5 \times 10^{15} cm$, the result shows that it \textcolor{blue}{can not} be described as a fluid. \\
+\textcolor{blue}{(By searching the net, I find that solar wind may travel a distance circa 100 AU, still not satisfy the relation $\lambda \ll L$)} \\
+
+(3)Warm ionized interstellar medium: \\
+with $T \approx 10^4 K$, $n \approx 10^1 cm^{-3}$, the mean free path $\lambda_{WIM} \approx 10^{13} cm$, compared to the size of system $L \approx 3.0 \times 10^{19} cm$, the result shows that it \textcolor{blue}{can} be described as a fluid. \\
+\textcolor{blue}{(Scale of WIM is about 1000 pc, from wikipedia.)} \\
+
+(4) Intracluster medium within galaxy clusters: \\
+with $T \approx 3 \times 10^7 K$, $n \approx 10^{-3} cm^{-3}$, the mean free path $\lambda_{IM} \approx 9 \times 10^{23} cm$, compared to the size of system $L \approx 10^{25} cm$, the result shows that it \textcolor{blue}{can not} be described as a fluid. \\
+\textcolor{blue}{(Scale of galaxy cluster is about 1 to 5 pc, from wikipedia.)} 
+\section{Exercise 2}
+(1)
+The trajectories of the two time step $dt=0.00001$ year and $dt=0.01$ year shown in following figure:
+
+
+\textcolor{red}{(2)}
+By using RK4 method, and let $dt=0.01$year, we can see the result(FIG. 5.) is well improved in contrast to Euler method. 
+\section{Exercise 3}
+By solving analytically we can get $\theta \approx 33^{\circ}$ and the velocity of y direction $v_y \approx 8.52 m/s$, by using shooting and bisection method, we can derive the value of $v_y \approx 8.517$, result shown in FIG.6.
+
+\section{Exercise 4}
+Use $numpy.linalg.solve$ to solve the linear equation, and plot the result with 2 different h, $h=0.05$ and $h=0.005$, result shown in FIG. 7,8
+
+
+
+\section{Code link}
+\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW4/EX1/angry_bird}{\textcolor{blue}{\bf{Exercise1}}} \\
+
+\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW4/EX2/binary_euler}{\textcolor{blue}{\bf{Exercise2-1}}} 
+\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW4/EX2/binary_RK4}{\textcolor{blue}{\bf{Exercise2-2}}} 
+\bibliographystyle{apsrev}\\
+
+\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW4/EX3/L8exercise}{\textcolor{blue}{\bf{Exercise3}}}\\
+
+\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW4/EX4}{\textcolor{blue}{\bf{Exercise4}}}
+\bibliography{Ref}
+\end{document}
+
+
+
+
+
+
+

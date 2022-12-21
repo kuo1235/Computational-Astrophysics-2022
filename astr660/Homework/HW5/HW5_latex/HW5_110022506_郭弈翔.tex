@@ -35,30 +35,54 @@ with $T \approx 10^4 K$, $n \approx 10^1 cm^{-3}$, the mean free path $\lambda_{
 with $T \approx 3 \times 10^7 K$, $n \approx 10^{-3} cm^{-3}$, the mean free path $\lambda_{IM} \approx 9 \times 10^{23} cm$, compared to the size of system $L \approx 10^{25} cm$, the result shows that it \textcolor{blue}{can not} be described as a fluid. \\
 \textcolor{blue}{(Scale of galaxy cluster is about 1 to 5 pc, from wikipedia.)} 
 \section{Exercise 2}
-(1)
-The trajectories of the two time step $dt=0.00001$ year and $dt=0.01$ year shown in following figure:
+(1)Implement the LW method, the result is as follow
+\begin{figure}[H] 
+\centering 
+\includegraphics[width=0.7\textwidth]{LW_method} 
+\caption{Lax-Wendroff method}  
+\end{figure}
 
+(2)Substituting the top hat function by Gaussian function, implement LW and LF method, the result:
+\begin{figure}[H]
+\centering  
+\subfigure[Lax-Friedrich method]{
+\includegraphics[width=0.45\textwidth]{G_LF_method}}
+\subfigure[Lax-Wendroff method]{
+\includegraphics[width=0.45\textwidth]{G_LW_method}}
+\caption{Gaussian function}
+\end{figure}
 
-\textcolor{red}{(2)}
-By using RK4 method, and let $dt=0.01$year, we can see the result(FIG. 5.) is well improved in contrast to Euler method. 
+(3)
+
 \section{Exercise 3}
-By solving analytically we can get $\theta \approx 33^{\circ}$ and the velocity of y direction $v_y \approx 8.52 m/s$, by using shooting and bisection method, we can derive the value of $v_y \approx 8.517$, result shown in FIG.6.
+(1) Implemented the piecewise-linear method (PLM) for the advection test, the result figure:
+\begin{figure}[H] 
+\centering 
+\includegraphics[width=0.7\textwidth]{PLM} 
+\caption{Piecewise-linear method}  
+\end{figure}
+
+(2)Change 1-dimensional to 2-dimensional finite volume method, using PLM method to see how 2D advection go. Since the result animation can not be put here, I choose some screen shot as my result:
+\begin{figure}[H]
+\centering  
+\subfigure[Square function going up-right (1)]{
+\includegraphics[width=0.45\textwidth]{EX3-1}}
+\subfigure[Square function going up-right (2)]{
+\includegraphics[width=0.45\textwidth]{EX3-2}}
+\caption{2D advection simulation}
+\end{figure}
 
 \section{Exercise 4}
-Use $numpy.linalg.solve$ to solve the linear equation, and plot the result with 2 different h, $h=0.05$ and $h=0.005$, result shown in FIG. 7,8
+
 
 
 
 \section{Code link}
-\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW4/EX1/angry_bird}{\textcolor{blue}{\bf{Exercise1}}} \\
+\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW5/EX2/fvm}{\textcolor{blue}{\bf{Exercise2}}} 
 
-\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW4/EX2/binary_euler}{\textcolor{blue}{\bf{Exercise2-1}}} 
-\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW4/EX2/binary_RK4}{\textcolor{blue}{\bf{Exercise2-2}}} 
-\bibliographystyle{apsrev}\\
+\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW5/EX3/fvm}{\textcolor{blue}{\bf{Exercise3-1}}}
+\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW5/EX3/fvm2d}{\textcolor{blue}{\bf{Exercise3-2}}}\\
 
-\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW4/EX3/L8exercise}{\textcolor{blue}{\bf{Exercise3}}}\\
-
-\href{https://github.com/kuo1235/Computational-Astrophysics-2022/tree/main/astr660/Homework/HW4/EX4}{\textcolor{blue}{\bf{Exercise4}}}
 \bibliography{Ref}
 \end{document}
 

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # setup the Sod shocktube problem in x-direction
-setup = setup_shocktube.SetupSod()
+setup = setup_shocktube.SetupSodX()
 
 # specify the hydro schemes
 hs = ulula_sim.HydroScheme(reconstruction = 'const', limiter = 'minmod', riemann='hll', time_integration='euler', cfl = 0.8)
@@ -16,5 +16,5 @@ sim = ulula_run.run(setup, hydro_scheme=hs, tmax=0.2, nx=100)
 
 # plot the images
 q_plot = ['DN','VX','PR']
-ulula_plt.plot1d(sim, q_plot=q_plot)
+ulula_plt.plot1d(sim, q_plot)
 plt.savefig("shocktube_img.png")

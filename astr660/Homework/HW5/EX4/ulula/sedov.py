@@ -19,7 +19,7 @@ sim = ulula_run.run(setup, hydro_scheme=hs, tmax=0.02, nx=200)
 q_plot = ['DN','PR','VT']
 #ulula_plt.plot2d(sim, q_plot=q_plot)
 #ulula_plt.plot1d(sim, q_plot=q_plot, plot_type='radius')
-ulula_plt.plot1d(sim, q_plot, plot_type='radius',true_solution_func=setup.trueSolution(sim,x,q_plot))
+ulula_plt.plot1d(sim, q_plot, plot_type='radius',true_solution_func=setup.trueSolution(sim,ulula.simulation.Simulation.x,q_plot))
 #ulula.examples.examples.sedovTest(nx=200, plot1d=True)
 plt.savefig("sedov1_img.png")
 

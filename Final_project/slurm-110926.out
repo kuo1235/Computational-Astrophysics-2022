@@ -1,0 +1,21 @@
+/cluster/home/yhkuo/.conda/envs/compAstro/bin/python
+/cluster/home/yhkuo/Entropy_and_Area/testK.py:152: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+  plt.show()
+r=25, S_total_r=191.91380128392709
+r=26, S_total_r=207.2628671955136
+r=27, S_total_r=223.20159399945604
+r=28, S_total_r=239.72978856655817
+r=29, S_total_r=256.8472949484157
+r=30, S_total_r=274.5539058504815
+r=31, S_total_r=292.8493768670482
+r=32, S_total_r=311.7334182832969
+r=33, S_total_r=331.20568438146506
+r=34, S_total_r=351.26576069427404
+r=35, S_total_r=371.91317401837205
+r=36, S_total_r=393.14726159786005
+r=37, S_total_r=414.96730482657324
+r=38, S_total_r=437.37238320264044
+r=39, S_total_r=460.3613504787436
+r=40, S_total_r=483.93276511497055
+Time used: 316.5470609664917 sec
+[ 0.02342923  0.61412118 -3.5214245 ]

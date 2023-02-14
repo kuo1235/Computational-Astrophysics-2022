@@ -1,8 +1,9 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from scipy import linalg
 from scipy.optimize import curve_fit
-
+import time
 
 #m1 = 1.0 * 10**(-3)
 #m2 = 2.5 * 10**(-4)
@@ -117,11 +118,11 @@ def matrix(N, N_sub, C1, C2, m1, m2):
 
     return mode_entropy
 
-matrix(200,40, 1, 10, 5.0*10**(-8), 1.0*10**(-8)) 
+#matrix(200,40, 1, 10, 5.0*10**(-8), 1.0*10**(-8)) 
 
-def fit_func(n_sub, a, b):
-    return a * np.log((200/np.pi) * np.sin( np.pi * n_sub/200)) + b
-
+def fit_func(n_sub, a, b, c):
+    #return a * np.log((200/np.pi) * np.sin( np.pi * n_sub/200)) + b
+    return a * 4 * np.pi * n_sub**2 + b * np.log(n_sub**2) + c 
 
 def plot(N, n_ini, n_fin, step, C1, C2, m1, m2): 
     
@@ -130,6 +131,8 @@ def plot(N, n_ini, n_fin, step, C1, C2, m1, m2):
 
     ps_array = np.array([])
     n_array  = np.array([])
+
+    start_time = time.time()
 
     for i in range(0, d+1):
 
@@ -141,19 +144,30 @@ def plot(N, n_ini, n_fin, step, C1, C2, m1, m2):
     popt, pcov = curve_fit(fit_func, n_array, ps_array)
     print(popt)
 
-    plt.scatter(n_array, ps_array, label='data, fit: a=%6.4f, b=%6.4f' % tuple(popt))     
-    #plt.plot(R_list, fit_func(R_list, *popt), label='fit: a=%6.4f, b=%6.4f, c=%6.4f' % tuple(popt), color='r')
+    print('Time used: {} sec'.format(time.time()-start_time))
+
+    col1 = "n_sub"
+    col2 = "Pseudo_Entropy"
+    col3 = "a"
+    col4 = "b"
+    col5 = "c"
+    
+    arealaw = pd.DataFrame({col1:n_array, col2:ps_array, col3:popt[0], col4:popt[1], col5:popt[2]})
+    arealaw.to_excel('N200.xlsx', sheet_name='sheet1', index=False)
+
+    plt.scatter(4* np.pi * n_array**2 * 0.001, ps_array, label='data')     
+    plt.plot(4* np.pi * n_array**2 * 0.001, fit_func(n_array, *popt), label='fit: a=%6.4f, b=%6.4f, c=%6.4f' % tuple(popt), color='r')
 
     plt.title('N=' + str(N) + ', C1=' + str(C1) + ', C2=' + str(C2) + ', m1=' + str(m1) + ', m2=' + str(m2))
-    plt.xlabel('N_sub')
+    plt.xlabel('Area/1000')
     plt.ylabel('Pseudo Entropy')
     plt.legend()
-    plt.savefig('QFT_minimal_N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin))
+    plt.savefig('QFT_minimal_N'+str(N)+'_m1_'+str(m1)+', m2_'+str(m2))
 
     plt.show()
 
 
-plot(200, 20, 180, 2, 1, 10, 5.0*10**(-8), 1.0*10**(-8))
+plot(200, 5, 195, 5, 1, 10, 1, 1)
 
 def S(m1, m2, l):
     

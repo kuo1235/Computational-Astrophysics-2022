@@ -148,12 +148,12 @@ def plot(N, n_ini, n_fin, step, C1, C2, m1, m2, xi, R):
     plt.xlabel('N_sub')
     plt.ylabel('Pseudo Entropy')
     plt.legend()
-    plt.savefig('QFT_conformal_N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin))
+    #plt.savefig('QFT_conformal_N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin))
 
     plt.show()
 
 
-plot(200, 20, 180, 2, 1, 10, 5.0*10**(-8), 1.0*10**(-8), 1/6, 100)
+plot(200, 20, 180, 2, 1, 10, 1, 1, 1/6, 100)
 
 def S(m1, m2, l):
     

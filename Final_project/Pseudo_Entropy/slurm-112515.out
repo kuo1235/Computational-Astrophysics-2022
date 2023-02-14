@@ -1,3 +1,0 @@
-/cluster/home/yhkuo/.conda/envs/compAstro/bin/python
-/cluster/home/yhkuo/.conda/envs/compAstro/bin/python: can't open file '/cluster/home/yhkuo/Computational-Astrophysics-2022/Final_project/Pseudo_Entropy/testK.py': [Errno 2] No such file or directory
-srun: error: m03: task 0: Exited with exit code 2

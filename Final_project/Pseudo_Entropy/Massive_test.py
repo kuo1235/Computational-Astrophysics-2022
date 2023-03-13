@@ -1,27 +1,84 @@
 import numpy as np
-from scipy import linalg
-import pandas as pd 
+import pandas as pd
 import matplotlib.pyplot as plt
-import time
+from scipy import linalg
 from scipy.optimize import curve_fit
-import numba 
+import time
 
-@numba.jit(nopython=True)
-def coupling_matrix(L, row_num):
-    couplingK = np.zeros((row_num, row_num))
-    for i in range(1, row_num):
+
+def eigenK(coupling_matrix):
+    eigenvalK, eigenvecK = linalg.eig(coupling_matrix)
+    return eigenvalK, eigenvecK
+
+def coupling_matrix(N, L, C, m):
+    couplingK = np.zeros((N, N))
+    for i in range(1, N):
         couplingK[i-1][i-1] = 2 + ( 1 / i**2 )*(0.5 + L*(L+1))
         couplingK[i-1][i] = -( (i + 0.5)**2  / (i*(i+1)) )
         couplingK[i][i-1] = couplingK[i-1][i]
    
     couplingK[0][0] = 9/4 + L*(L+1) 
-    couplingK[row_num-1][row_num-1] =  2 + ( 1 / (row_num)**2 )*(0.5 + L*(L+1))
+    couplingK[N-1][N-1] =  2 + ( 1 / (N)**2 )*(0.5 + L*(L+1))
    
     return couplingK
+#omega(10, 10 ,1, 1)
 
-def eigenK(coupling_matrix):
-    eigenvalK, eigenvecK = linalg.eig(coupling_matrix)
-    return eigenvalK, eigenvecK
+def S_L(N, N_sub, L, C1, C2, m1, m2):
+        
+    #-------------------------------OmegaK---------------------------------------------------
+
+    #eigenvalK1 = eigenK(coupling_matrix(N , L, C1, m1)
+    
+    #eigenvalK2 = eigenK(coupling_matrix(N , L, C2, m2)
+
+    #--------------------------------X, P, R matrix------------------------------------------- 
+    X = np.zeros((N_sub, N_sub), dtype=complex)
+    P = np.zeros((N_sub, N_sub), dtype=complex)
+    R = np.zeros((N_sub, N_sub), dtype=complex)
+  
+    for i in range(1, N_sub+1):        
+        for j in range(1, N_sub+1):
+            x = 0
+            p = 0
+            r = 0
+                       
+            #print("i=" + str(i) + ", j=" + str(j))
+
+            #S_t = 0
+
+            #for L in range(0, L_max+1):
+                
+            #for k in range(-N+1, N):    
+            for k in range(0, N):
+        
+                eigenvalK1, eigenvecK1 = eigenK(coupling_matrix(N , L, C1, m1))
+                eigenvalK2, eigenvecK2 = eigenK(coupling_matrix(N , L, C2, m2))
+                    
+                #eigenvalK1 = sorted(eigenvalK1)
+                #eigenvalK2 = sorted(eigenvalK2)
+
+                #omega1 = eigenvalK1[k]
+                #omega2 = eigenvalK2[k]
+
+                omega1 = np.sqrt(eigenvalK1[k])
+                omega2 = np.sqrt(eigenvalK2[k])
+
+                #print('omega1 = ' + str(omega1) )
+                #print('omega2 = ' + str(omega2) )
+                
+                x_k = (0.5/N) * (2 / (omega1 + omega2)) * np.cos(2 * np.pi * k * (i - j) / N)
+                p_k = (0.5/N) * (2 * omega1 * omega2) / (omega1 + omega2) * np.cos(2 * np.pi * k * (i-j) / N)
+                r_k = (0.5j/N) * (omega2 - omega1) / (omega1 + omega2) * np.cos(2 * np.pi * k * (i-j) / N)
+
+                x += x_k
+                p += p_k
+                r += r_k
+            
+            X[i-1][j-1] = x
+            P[i-1][j-1] = p
+            R[i-1][j-1] = r
+                
+    return X, P, R
 
 def submatrix(matrix, row_e, col_e):
 
@@ -52,8 +109,7 @@ def fit_func(x,a,b,c):
     return a * 4*np.pi * x**2 + b * np.log(x**2) + c
     #return a * 4*np.pi * x**2
 
-#@numba.vectorize(nopython=True)
-def total_entropy(l_max, N, n_ini, n_fin):
+def total_entropy(l_max, N, n_ini, n_fin, C1, C2, m1, m2):
     
     R_list = np.array([])
     log_R_list = np.array([])
@@ -70,13 +126,8 @@ def total_entropy(l_max, N, n_ini, n_fin):
     for r in range (n_ini, n_fin+1):
         S_t = 0
         for l in range (0, l_max+1):
-            couplingK = coupling_matrix(l, N)
-            eigenvalK, eigenvecK = eigenK(couplingK) # the eigenvector has already been normalized
-
-            #eigenvecK = np.transpose(eigenvecK)
-             
-            Xmatrix = (1/2)*np.matmul(eigenvecK, np.matmul(np.diag((eigenvalK**(-1/2))), np.linalg.inv(eigenvecK)))
-            Pmatrix = (1/2)*np.matmul(eigenvecK, np.matmul(np.diag((eigenvalK**(1/2))), np.linalg.inv(eigenvecK))) 
+            
+            Xmatrix, Pmatrix, Rmatrix = S_L(N, n_ini + r, l, C1, C2, m1, m2)
 
             Xreduce = submatrix(Xmatrix, r , r)
             Preduce = submatrix(Pmatrix, r , r)
@@ -91,7 +142,7 @@ def total_entropy(l_max, N, n_ini, n_fin):
             #print("eigenvalueC is:" + str(eigenvalC))
 
             S_mode = mode_entropy(eigenvalC)
-            print("mode_entropy is:" + str(S_mode))
+            #print("mode_entropy is:" + str(S_mode))
 
             S_total = (2*l+1) * np.real(S_mode)
 
@@ -136,8 +187,8 @@ def total_entropy(l_max, N, n_ini, n_fin):
     col4 = "b"
     col5 = "c"
 
-    arealaw = pd.DataFrame({col1:R_list, col2:S_list, col3:popt[0], col4:popt[1], col5:popt[2]})
-    arealaw.to_excel('N_n_L.xlsx', sheet_name='sheet1', index=False)
+    #arealaw = pd.DataFrame({col1:R_list, col2:S_list, col3:popt[0], col4:popt[1], col5:popt[2]})
+    #arealaw.to_excel('N_n_L.xlsx', sheet_name='sheet1', index=False)
 
 
     plt.scatter(R_list, S_list, label='data')     
@@ -147,11 +198,9 @@ def total_entropy(l_max, N, n_ini, n_fin):
     plt.xlabel('Area')
     plt.ylabel('S')
     plt.legend()
-    plt.savefig('N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin)+'_L'+str(l_max))
+    #plt.savefig('N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin)+'_L'+str(l_max))
 
     plt.show()
 
-areaLaw = total_entropy(300, 20, 1, 10)
-
-#print("Total entropy is:" + str(areaLaw))
+areaLaw = total_entropy(20, 20, 1, 10, 1, 1, 1, 1)  
 

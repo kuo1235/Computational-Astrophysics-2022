@@ -1,4 +1,6 @@
 import numpy as np
+import pandas as pd
+import time
 import matplotlib.pyplot as plt
 from scipy import linalg
 from scipy.optimize import curve_fit
@@ -121,7 +123,7 @@ def matrix(N, N_sub, C1, C2, m1, m2, xi, r):  #do not sure why we cam mot use "R
 
 def fit_func(n_sub, a, b):
     return a * np.log((200/np.pi) * np.sin( np.pi * n_sub/200)) + b
-
+    # NEED A BETTER FITTING FUNCTION!!!!
 
 def plot(N, n_ini, n_fin, step, C1, C2, m1, m2, xi, R): 
     

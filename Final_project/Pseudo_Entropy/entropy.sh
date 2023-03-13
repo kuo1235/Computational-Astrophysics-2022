@@ -10,4 +10,4 @@ source activate compAstro
 
 which python
 
-srun python PE_3.py
+srun python Massive_KG.py

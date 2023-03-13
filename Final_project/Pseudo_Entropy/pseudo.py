@@ -93,11 +93,11 @@ def matrix(N, N_sub, m1, m2):
 
     eigenvalC, eigenvecC = eigenK(iJG)
     
-   # print(eigenvalC)
+    print(eigenvalC)
     
     eigenvalC = eigenvalC[eigenvalC >= 0]
 
-    #print(eigenvalC)
+    #print(np.shape(eigenvalC))
 
 
 #matrix(10,5)
@@ -122,7 +122,7 @@ def matrix(N, N_sub, m1, m2):
 
     return mode_entropy
 
-#matrix(200,40) 
+#matrix(10,4,1,1) 
 
 def fit_func(n_sub, a, b):
     return a * np.log((200/np.pi) * np.sin( np.pi * n_sub/200)) + b
@@ -153,12 +153,12 @@ def plot(N, n_ini, n_fin, step, m1, m2):
     plt.xlabel('N_sub')
     plt.ylabel('Pseudo Entropy')
     plt.legend()
-    plt.savefig('N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin))
+    #plt.savefig('N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin))
 
     plt.show()
 
 
-plot(200, 20, 180, 20, 5.0*10**(-8), 1.0*10**(-8))
+plot(200, 20, 180, 20, 1.0*10**(-8), 1.0*10**(-8))
 
 def S(m1, m2, l):
     

@@ -4,20 +4,23 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import time
 from scipy.optimize import curve_fit
-import numba 
 
-@numba.jit(nopython=True)
-def coupling_matrix(L, row_num):
-    couplingK = np.zeros((row_num, row_num))
-    for i in range(1, row_num):
-        couplingK[i-1][i-1] = 2 + ( 1 / i**2 )*(0.5 + L*(L+1))
-        couplingK[i-1][i] = -( (i + 0.5)**2  / (i*(i+1)) )
+
+def coupling_matrix(N, L, C, m):
+
+    #Coupling Matrix---------------
+
+    #epsilon = 1
+
+    couplingK = np.zeros((N, N))
+    for i in range(1, N):
+        couplingK[i-1][i-1] = 0.5*( (C * m**2) + (np.pi**2 * L*(L+1) / ( N**2 * np.sin( np.pi * (i+0.5)/N )**2 ) ) + np.sin( np.pi * (i-0.5)/N )**2 / np.sin( np.pi * (i+0.5)/N)**2  + 1)
+        couplingK[i-1][i] = -0.5 * np.sin( np.pi * (i-0.5)/N ) / np.sin( np.pi * (i+0.5)/N ) 
         couplingK[i][i-1] = couplingK[i-1][i]
-   
-    couplingK[0][0] = 9/4 + L*(L+1) 
-    couplingK[row_num-1][row_num-1] =  2 + ( 1 / (row_num)**2 )*(0.5 + L*(L+1))
-   
-    return couplingK
+        
+    couplingK[N-1][N-1] = 0.5 * ( C * m**2 + np.pi**2 * L*(L+1) / (N**2 * np.sin( np.pi * (N+0.5)/N )**2) + np.sin( np.pi * (N-0.5)/N )**2 / np.sin( np.pi * (N+0.5)/N)**2 +  1 )
+
+    return couplingK   
 
 def eigenK(coupling_matrix):
     eigenvalK, eigenvecK = linalg.eig(coupling_matrix)
@@ -53,7 +56,7 @@ def fit_func(x,a,b,c):
     #return a * 4*np.pi * x**2
 
 #@numba.vectorize(nopython=True)
-def total_entropy(l_max, N, n_ini, n_fin):
+def total_entropy(l_max, N, n_ini, n_fin, C, m):
     
     R_list = np.array([])
     log_R_list = np.array([])
@@ -70,7 +73,7 @@ def total_entropy(l_max, N, n_ini, n_fin):
     for r in range (n_ini, n_fin+1):
         S_t = 0
         for l in range (0, l_max+1):
-            couplingK = coupling_matrix(l, N)
+            couplingK = coupling_matrix(N, l, C, m)
             eigenvalK, eigenvecK = eigenK(couplingK) # the eigenvector has already been normalized
 
             #eigenvecK = np.transpose(eigenvecK)
@@ -137,7 +140,7 @@ def total_entropy(l_max, N, n_ini, n_fin):
     col5 = "c"
 
     arealaw = pd.DataFrame({col1:R_list, col2:S_list, col3:popt[0], col4:popt[1], col5:popt[2]})
-    arealaw.to_excel('N_n_L.xlsx', sheet_name='sheet1', index=False)
+    arealaw.to_excel('Massive_N_n_L.xlsx', sheet_name='sheet1', index=False)
 
 
     plt.scatter(R_list, S_list, label='data')     
@@ -147,11 +150,11 @@ def total_entropy(l_max, N, n_ini, n_fin):
     plt.xlabel('Area')
     plt.ylabel('S')
     plt.legend()
-    plt.savefig('N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin)+'_L'+str(l_max))
+    plt.savefig('Massive_N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin)+'_L'+str(l_max))
 
     plt.show()
 
-areaLaw = total_entropy(300, 20, 1, 10)
+areaLaw = total_entropy(100, 3000, 40, 60, 1, 1)
 
 #print("Total entropy is:" + str(areaLaw))
 

@@ -127,7 +127,7 @@ def total_entropy(l_max, N, n_ini, n_fin, C1, C2, m1, m2):
         S_t = 0
         for l in range (0, l_max+1):
             
-            Xmatrix, Pmatrix, Rmatrix = S_L(N, n_ini + r, l, C1, C2, m1, m2)
+            Xmatrix, Pmatrix, Rmatrix = S_L(N, r, l, C1, C2, m1, m2)
 
             Xreduce = submatrix(Xmatrix, r , r)
             Preduce = submatrix(Pmatrix, r , r)
@@ -187,8 +187,8 @@ def total_entropy(l_max, N, n_ini, n_fin, C1, C2, m1, m2):
     col4 = "b"
     col5 = "c"
 
-    #arealaw = pd.DataFrame({col1:R_list, col2:S_list, col3:popt[0], col4:popt[1], col5:popt[2]})
-    #arealaw.to_excel('N_n_L.xlsx', sheet_name='sheet1', index=False)
+    arealaw = pd.DataFrame({col1:R_list, col2:S_list, col3:popt[0], col4:popt[1], col5:popt[2]})
+    arealaw.to_excel('Test_n60_L2.xlsx', sheet_name='sheet1', index=False)
 
 
     plt.scatter(R_list, S_list, label='data')     
@@ -198,9 +198,9 @@ def total_entropy(l_max, N, n_ini, n_fin, C1, C2, m1, m2):
     plt.xlabel('Area')
     plt.ylabel('S')
     plt.legend()
-    #plt.savefig('N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin)+'_L'+str(l_max))
+    plt.savefig('N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin)+'_L'+str(l_max))
 
     plt.show()
 
-areaLaw = total_entropy(20, 20, 1, 10, 1, 1, 1, 1)  
+areaLaw = total_entropy(2, 60, 1, 10, 1, 1, 1, 1)  
 

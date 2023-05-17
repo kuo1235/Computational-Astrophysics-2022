@@ -17,4 +17,4 @@ source activate compAstro
 
 which python
 
-srun python Multi2D.py
+srun python QMulti2D.py

@@ -4,20 +4,22 @@ from scipy import linalg
 from resource import getrusage, RUSAGE_SELF
 import time
 import pandas as pd
-from multiprocessing import Process, Queue, Pool
+from multiprocessing import Process, Queue
+from scipy.optimize import curve_fit
+
 
 def eigenK(coupling_matrix):
     eigenvalK, eigenvecK = linalg.eig(coupling_matrix)
     return eigenvalK, eigenvecK
 
-def omega(m, N, kx, ky): #k can be n dimensional 
+def omega(t, m, N, kx, ky): #k can be n dimensional 
     
-    omega_square = m**2 + (2 * np.sin(np.pi * kx / N))**2 + (2 * np.sin(np.pi * ky / N))**2 
+    omega_square = np.exp(t) * m**2 + (2 * np.sin(np.pi * kx / N))**2 + (2 * np.sin(np.pi * ky / N))**2 
     omega = omega_square**(1/2)
 
     return omega
 
-def X_matrix(N, N_sub, m1, m2,q1):
+def X_matrix(N, N_sub, t1, t2, m1, m2,q1):
     
     start_timeX = time.time()
     
@@ -42,7 +44,7 @@ def X_matrix(N, N_sub, m1, m2,q1):
                     for kx in range(0, N):
                         for ky in range(0, N):
                     
-                            x_k = (0.5/N**2) * (2/(omega(m1, N, kx, ky) + omega(m2, N, kx, ky))) * np.cos(2 * np.pi * (kx) * (II - JJ) / N) * np.cos(2 * np.pi * (ky) * (II - JJ) / N)
+                            x_k = (0.5/N**2) * (2/(omega(t1, m1, N, kx, ky) + omega(t2, m2, N, kx, ky))) * np.cos(2 * np.pi * (kx) * (II - JJ) / N) * np.cos(2 * np.pi * (ky) * (II - JJ) / N)
                             
 
                             x += x_k 
@@ -54,7 +56,7 @@ def X_matrix(N, N_sub, m1, m2,q1):
     #q.put(X)
     return q1.put(X) 
  
-def P_matrix(N, N_sub, m1, m2, q2):
+def P_matrix(N, N_sub, t1, t2, m1, m2, q2):
     
     start_timeP = time.time()
     
@@ -65,7 +67,7 @@ def P_matrix(N, N_sub, m1, m2, q2):
    
     for i1 in range(1, N_sub+1):        
         for i2 in range(1, N_sub+1):
-    
+                
             II += 1
             JJ = 0
                 
@@ -79,7 +81,7 @@ def P_matrix(N, N_sub, m1, m2, q2):
                     for kx in range(0, N):
                         for ky in range(0, N):
                                                
-                            p_k = (0.5/N**2) * (2*omega(m1, N, kx, ky)*omega(m2, N, kx, ky)) / (omega(m1, N, kx, ky) + omega(m2, N, kx, ky)) * np.cos(2 * np.pi * (kx) * (II-JJ) / N) * np.cos(2 * np.pi * (ky) * (II - JJ) / N)
+                            p_k = (0.5/N**2) * (2*omega(t1, m1, N, kx, ky)*omega(t2, m2, N, kx, ky)) / (omega(t1, m1, N, kx, ky) + omega(t2, m2, N, kx, ky)) * np.cos(2 * np.pi * (kx) * (II-JJ) / N) * np.cos(2 * np.pi * (ky) * (II - JJ) / N)
                                            
                             p += p_k
                                                
@@ -90,7 +92,7 @@ def P_matrix(N, N_sub, m1, m2, q2):
     #q.put(P)
     return q2.put(P) 
                              
-def R_matrix(N, N_sub, m1, m2, q3):
+def R_matrix(N, N_sub, t1, t2, m1, m2, q3):
     
     start_timeR = time.time()
     
@@ -117,7 +119,7 @@ def R_matrix(N, N_sub, m1, m2, q3):
                     for kx in range(0, N):
                         for ky in range(0, N):
                     
-                            r_k = (0.5j/N**2) * (omega(m2, N, kx, ky)-omega(m1, N, kx, ky)) / (omega(m1, N, kx, ky) + omega(m2, N, kx, ky)) * np.cos(2 * np.pi * (kx) * (II-JJ) / N) * np.cos(2 * np.pi * (ky) * (II - JJ) / N)
+                            r_k = (0.5j/N**2) * (omega(t2, m2, N, kx, ky)-omega(t1, m1, N, kx, ky)) / (omega(t1, m1, N, kx, ky) + omega(t2, m2, N, kx, ky)) * np.cos(2 * np.pi * (kx) * (II-JJ) / N) * np.cos(2 * np.pi * (ky) * (II - JJ) / N)
                 
                             r += r_k
                     R[II-1][JJ-1] = r
@@ -125,7 +127,7 @@ def R_matrix(N, N_sub, m1, m2, q3):
     #q.put(R)
     return q3.put(R) 
 
-def Entropy(N, N_sub, m1, m2):
+def Entropy(N, N_sub, t1, t2, m1, m2):
 
     #--------------------------------X, P, R matrix------------------------------------------- 
     #X = X_matrix(N, N_sub, m1, m2)
@@ -136,30 +138,21 @@ def Entropy(N, N_sub, m1, m2):
     if __name__ == '__main__':
     
         #q1 = []
-         
-        pool1 = Pool()
-        X = pool1.starmap(X_matrix, [range(N), N_sub, m1, m2])
- 
-        pool2 = Pool()
-        P = pool2.starmap(P_matrix, [range(N), N_sub, m1, m2])
-        
-        pool3 = Pool()
-        R = pool3.starmap(R_matrix, [range(N), N_sub, m1, m2])
 
-        #q1 = Queue()
-        #q2 = Queue()   
-        #q3 = Queue()
+        q1 = Queue()
+        q2 = Queue()   
+        q3 = Queue()
 
-        #pX = Process(target=X_matrix, args=(N, N_sub, m1, m2,q1))
-        #pP = Process(target=P_matrix, args=(N, N_sub, m1, m2,q2))
-        #pR = Process(target=R_matrix, args=(N, N_sub, m1, m2,q3))
+        pX = Process(target=X_matrix, args=(N, N_sub, t1, t2, m1, m2,q1))
+        pP = Process(target=P_matrix, args=(N, N_sub, t1, t2, m1, m2,q2))
+        pR = Process(target=R_matrix, args=(N, N_sub, t1, t2, m1, m2,q3))
         
         #print(q1.full())
 
 
-        #pX.start()
-        #pP.start()
-        #pR.start()
+        pX.start()
+        pP.start()
+        pR.start()
 
         #print(000)
 
@@ -170,9 +163,10 @@ def Entropy(N, N_sub, m1, m2):
         #?????????????????
         #print(123)
 
-        #X = q1.get()
-        #P = q2.get()
-        #R = q3.get()
+        X = q1.get()
+        P = q2.get()
+
+        R = q3.get()
         
         #print(456)
         #print(X)
@@ -237,24 +231,28 @@ def Entropy(N, N_sub, m1, m2):
             #print(modeS) 
              
             mode_entropy += modeS
-            mode_entropy = np.real(mode_entropy)
+            #mode_entropy = np.real(mode_entropy)
 
-        #print(mode_entropy)
+        print(mode_entropy)
  
         return mode_entropy
 
 #Entropy(20,9,1e-5,1e-5) 
 
-#def fit_func(n_sub, a, b):
+def fit_func(t, a, b):
     #return a * (20/np.pi) * np.sin( (np.pi * n_sub / 20)) + b
-    #return a * n_sub**2 + b * np.log(n_sub**2) + c
+    return a *  np.cosh(t)  + b 
 
-def plot(N, n_ini, n_fin, step, m1, m2): 
-    
-    d = int((n_fin - n_ini)/step)
+def plot(N, t1, t2, step, m1, m2): 
+
+    print('N=' + str(N) + '_m1=' + str(m1) + '_m2=' + str(m2))
+
+    d = int((t2 - t1)/step)
+
+    ps_iarray = np.array([])
 
     ps_array = np.array([])
-    n_array  = np.array([])
+    t_array  = np.array([])
 
     start_time1 = time.time()
 
@@ -262,49 +260,48 @@ def plot(N, n_ini, n_fin, step, m1, m2):
 
         start_time2 = time.time()
 
-        ps = Entropy(N, n_ini + step*i ,m1, m2)
+        ps = Entropy(N, int(N/2), t1+i*step-10j, t1+i*step+10j, m1, m2)
         
-        ps = np.real(ps)
+        #ps_iarray = np.append(ps_iarray, ps)
+
+        #ps = np.real(ps)
         
-        print('Progress: ' + str(n_ini + step*i) + '/' +str(N))
+        print('Progress: ' + str(t1 + step*i) + '/' +str(t2))
         print('Time used: {} sec'.format(time.time()-start_time2))
         
         ps_array = np.append(ps_array, ps)
-        n_array  = np.append(n_array, n_ini + step*i) 
+        t_array  = np.append(t_array, t1 + step*i) 
     
         print("peak memory:", getrusage(RUSAGE_SELF).ru_maxrss / 1000 / 1000, "MB")
 
-    print(ps_array)
-    print(n_array)
+    #print(ps_array)
+    #print(n_array)
     
-    #popt, pcov = curve_fit(fit_func, n_array, ps_array)
-    #print(popt)
+    popt, pcov = curve_fit(fit_func, t_array, ps_array)
+    print(popt)
 
     print('Total Time used: {} sec'.format(time.time()-start_time1))
     
     #print("peak memory:", getrusage(RUSAGE_SELF).ru_maxrss / 1000 / 1000, "MB")
 
-    col1 = "n_sub"
+    col1 = "t"
     col2 = "Pseudo_Entropy"
-    #col3 = "a"
+    #col1 = "i_PS"
     #col4 = "b"
     #col5 = "c"
   
-    arealaw = pd.DataFrame({col1:n_array, col2:ps_array})
-    arealaw.to_excel('N30_m1_1e-5_m2_1e-5.xlsx', sheet_name='sheet1', index=False)
+    arealaw = pd.DataFrame({col1:t_array, col2:ps_array})
+    arealaw.to_excel('Q_N20_m1_1e-5_m2_1e-5.xlsx', sheet_name='sheet1', index=False)
 
-    plt.scatter(n_array, ps_array, label='data')     
-    #plt.plot(n_array, fit_func(n_array, *popt), label='fit: a=%6.4f, b=%6.4f' % tuple(popt), color='r')
+    plt.scatter(t_array, ps_array, label='data')     
+    plt.plot(t_array, fit_func(t_array, *popt), label='fit: a=%6.4f, b=%6.4f' % tuple(popt), color='r')
 
     plt.title('2D_N=' + str(N) + ', m1=' + str(m1) + ', m2=' + str(m2))
-    plt.xlabel('N_sub')
+    plt.xlabel('t+1j')
     plt.ylabel('Pseudo Entropy')
     plt.legend()
-    #plt.savefig('N'+str(N)+'_m1_'+str(m1)+'_m2_'+str(m2))
+    plt.savefig('Q10_2D_N'+str(N) +  '_m1_'+str(m1)+'_m2_'+str(m2))
 
     plt.show()
 
-plot(30, 2, 28, 1, 1.0*10**(-5), 1.0*10**(-5))
-
-
-
+plot(20, 0, 30, 1, 1.0*10**(-5), 1.0*10**(-5))

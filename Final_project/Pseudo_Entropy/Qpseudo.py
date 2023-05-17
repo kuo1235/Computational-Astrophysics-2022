@@ -11,9 +11,9 @@ def eigenK(coupling_matrix):
     eigenvalK, eigenvecK = linalg.eig(coupling_matrix)
     return eigenvalK, eigenvecK
 
-def omega(m, N, k): #k can be n dimensional 
+def omega(t, m, N, k): #k can be n dimensional 
     
-    omega_square = m**2 + (2 * np.sin(np.pi * k / N))**2
+    omega_square = np.exp(t) * m**2 + (2 * np.sin(np.pi * k / N))**2
     omega = omega_square**(1/2)
 
     return omega
@@ -27,7 +27,7 @@ def omega(m, N, k): #k can be n dimensional
 #print(OMEGA)
 
 
-def matrix(N, N_sub, m1, m2):
+def matrix(t1, t2, N, N_sub, m1, m2):
 
     #--------------------------------X, P, R matrix------------------------------------------- 
     X = np.zeros((N_sub, N_sub), dtype=complex)
@@ -40,9 +40,9 @@ def matrix(N, N_sub, m1, m2):
             r = 0
 
             for k in range(0, N):
-                x_k = (0.5/N) * (2/(omega(m1, N, k) + omega(m2, N, k))) * np.cos(2 * np.pi * k * (i - j) / N)
-                p_k = (0.5/N) * (2*omega(m1, N, k)*omega(m2, N, k)) / (omega(m1, N, k) + omega(m2, N, k)) * np.cos(2 * np.pi * k * (i-j) / N)
-                r_k = (0.5j/N) * (omega(m2, N, k)-omega(m1, N, k)) / (omega(m1, N, k) + omega(m2, N, k)) * np.cos(2 * np.pi * k * (i-j) / N)
+                x_k = (0.5/N) * (2/(omega(t1, m1, N, k) + omega(t2, m2, N, k))) * np.cos(2 * np.pi * k * (i - j) / N)
+                p_k = (0.5/N) * (2*omega(t1, m1, N, k)*omega(t2, m2, N, k)) / (omega(t1, m1, N, k) + omega(t2, m2, N, k)) * np.cos(2 * np.pi * k * (i-j) / N)
+                r_k = (0.5j/N) * (omega(t2, m2, N, k)-omega(t1, m1, N, k)) / (omega(t1, m1, N, k) + omega(t2, m2, N, k)) * np.cos(2 * np.pi * k * (i-j) / N)
                 
                 #x_k = (0.5/N) * (2/(omega(m1, N, k) + omega(m2, N, k))) * np.exp(2j * np.pi * k * (i-j) / N)
                 #p_k = (0.5/N) * (2*omega(m1, N, k)*omega(m2, N, k)) / (omega(m1, N, k) + omega(m2, N, k)) * np.exp(2j * np.pi * k * (i-j) / N)
@@ -93,11 +93,11 @@ def matrix(N, N_sub, m1, m2):
 
     eigenvalC, eigenvecC = eigenK(iJG)
     
-   # print(eigenvalC)
+    #print(eigenvalC)
     
     eigenvalC = eigenvalC[eigenvalC >= 0]
 
-    #print(eigenvalC)
+    #print(np.shape(eigenvalC))
 
 
 #matrix(10,5)
@@ -118,47 +118,47 @@ def matrix(N, N_sub, m1, m2):
          
         mode_entropy += modeS
     
-    #print(mode_entropy)
+    print(mode_entropy)
 
     return mode_entropy
 
-#matrix(200,40) 
+#matrix(10,4,1,1) 
 
-def fit_func(n_sub, a, b):
-    return a * np.log((200/np.pi) * np.sin( np.pi * n_sub/200)) + b
+def fit_func(t, a, b):
+    #return a * np.log((200/np.pi) * np.sin( np.pi * n_sub/200)) + b
+    return a * np.log( np.cosh(1/t) ) + b
 
-
-def plot(N, n_ini, n_fin, step, m1, m2): 
+def plot(t_ini, t_fin, step, N, m1, m2): 
     
-    d = int((n_fin - n_ini)/step)
+    d = int((t_fin - t_ini)/step)
     #print(d)
 
     ps_array = np.array([])
-    n_array  = np.array([])
+    t_array  = np.array([])
 
     for i in range(0, d+1):
 
-        ps = matrix(N, n_ini + step*i,m1, m2)
+        ps = matrix(t_ini+step*i, t_ini+step*i, N, int(N/2) ,m1, m2)
 
         ps_array = np.append(ps_array, ps)
-        n_array  = np.append(n_array, n_ini + step*i) 
+        t_array  = np.append(t_array, t_ini + step*i) 
 
-    popt, pcov = curve_fit(fit_func, n_array, ps_array)
+    popt, pcov = curve_fit(fit_func, t_array, ps_array)
     print(popt)
 
-    plt.scatter(n_array, ps_array, label='data, fit: a=%6.4f, b=%6.4f' % tuple(popt))     
-    #plt.plot(R_list, fit_func(R_list, *popt), label='fit: a=%6.4f, b=%6.4f, c=%6.4f' % tuple(popt), color='r')
+    plt.scatter(t_array, ps_array, label='data, fit: a=%6.4f, b=%6.4f' % tuple(popt))     
+    plt.plot(t_array, fit_func(t_array, *popt), label='fit: a=%6.4f, b=%6.4f' % tuple(popt), color='r')
 
     plt.title('N=' + str(N) + ', m1=' + str(m1) + ', m2=' + str(m2))
-    plt.xlabel('N_sub')
+    plt.xlabel('t+1i')
     plt.ylabel('Pseudo Entropy')
     plt.legend()
-    plt.savefig('N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin))
+    #plt.savefig('N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin))
 
     plt.show()
 
 
-plot(200, 20, 180, 20, 5.0*10**(-8), 1.0*10**(-8))
+plot(0, 30, 1, 20, 1.0*10**(-5), 1.0*10**(-5))
 
 def S(m1, m2, l):
     

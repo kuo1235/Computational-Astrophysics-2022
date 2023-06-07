@@ -17,6 +17,7 @@ def omega(t, m, N, kx, ky): #k can be n dimensional
     omega_square = np.exp(t) * m**2 + (2 * np.sin(np.pi * kx / N))**2 + (2 * np.sin(np.pi * ky / N))**2 
     omega = omega_square**(1/2)
 
+    #print(omega)
     return omega
 
 def X_matrix(N, N_sub, t1, t2, m1, m2,q1):
@@ -233,7 +234,7 @@ def Entropy(N, N_sub, t1, t2, m1, m2):
             mode_entropy += modeS
             #mode_entropy = np.real(mode_entropy)
 
-        print(mode_entropy)
+        #print(mode_entropy)
  
         return mode_entropy
 
@@ -241,7 +242,7 @@ def Entropy(N, N_sub, t1, t2, m1, m2):
 
 def fit_func(t, a, b):
     #return a * (20/np.pi) * np.sin( (np.pi * n_sub / 20)) + b
-    return a *  np.cosh(t)  + b 
+    return a * np.log( np.cosh(t) ) + b 
 
 def plot(N, t1, t2, step, m1, m2): 
 
@@ -264,7 +265,7 @@ def plot(N, t1, t2, step, m1, m2):
         
         #ps_iarray = np.append(ps_iarray, ps)
 
-        #ps = np.real(ps)
+        ps = np.real(ps)
         
         print('Progress: ' + str(t1 + step*i) + '/' +str(t2))
         print('Time used: {} sec'.format(time.time()-start_time2))
@@ -291,17 +292,17 @@ def plot(N, t1, t2, step, m1, m2):
     #col5 = "c"
   
     arealaw = pd.DataFrame({col1:t_array, col2:ps_array})
-    arealaw.to_excel('Q_N20_m1_1e-5_m2_1e-5.xlsx', sheet_name='sheet1', index=False)
+    arealaw.to_excel('Q10_N20_m1_1e-20_m2_1e-20.xlsx', sheet_name='sheet1', index=False)
 
     plt.scatter(t_array, ps_array, label='data')     
     plt.plot(t_array, fit_func(t_array, *popt), label='fit: a=%6.4f, b=%6.4f' % tuple(popt), color='r')
 
     plt.title('2D_N=' + str(N) + ', m1=' + str(m1) + ', m2=' + str(m2))
-    plt.xlabel('t+1j')
+    plt.xlabel('t \u00B1 1i')
     plt.ylabel('Pseudo Entropy')
     plt.legend()
     plt.savefig('Q10_2D_N'+str(N) +  '_m1_'+str(m1)+'_m2_'+str(m2))
 
     plt.show()
 
-plot(20, 0, 30, 1, 1.0*10**(-5), 1.0*10**(-5))
+plot(20, 0, 40, 1, 1.0*10**(-20), 1.0*10**(-20))

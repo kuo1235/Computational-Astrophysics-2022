@@ -146,19 +146,19 @@ def plot(N, n_ini, n_fin, step, m1, m2):
     popt, pcov = curve_fit(fit_func, n_array, ps_array)
     print(popt)
 
-    plt.scatter(n_array, ps_array, label='data, fit: a=%6.4f, b=%6.4f' % tuple(popt))     
-    #plt.plot(R_list, fit_func(R_list, *popt), label='fit: a=%6.4f, b=%6.4f, c=%6.4f' % tuple(popt), color='r')
+    plt.scatter(n_array, ps_array, label='data')     
+    plt.plot(n_array, fit_func(n_array, *popt), label='fit: a=%6.4f, b=%6.4f' % tuple(popt), color='r')
 
     plt.title('N=' + str(N) + ', m1=' + str(m1) + ', m2=' + str(m2))
     plt.xlabel('N_sub')
     plt.ylabel('Pseudo Entropy')
     plt.legend()
-    #plt.savefig('N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin))
+    plt.savefig('N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin))
 
     plt.show()
 
 
-plot(200, 20, 180, 20, 1.0*10**(1), 1.0*10**(1))
+plot(200, 20, 180, 20, 5.0*10**(-8), 1.0*10**(-8))
 
 def S(m1, m2, l):
     

@@ -93,23 +93,23 @@ def matrix(t1, t2, N, N_sub, m1, m2):
 
     eigenvalC, eigenvecC = eigenK(iJG)
     
-    #print(eigenvalC)
+    print(eigenvalC)
     
-    eigenvalC = eigenvalC[eigenvalC >= 0]
+    eigenvalC = eigenvalC[eigenvalC > 0]
 
-    #print(np.shape(eigenvalC))
+    print(np.shape(eigenvalC))
 
 
 #matrix(10,5)
 
 #def mode_entropy(eigenvalC):
-    #size = np.size(eigenvalC)
+    size = np.size(eigenvalC)
 
     mode_entropy=0
 
     for i in range(0,N_sub):
         #if abs(np.real(eigenvalC[i])-0.5) < 10**-10:
-            #modeS = 0
+         #   modeS = 0
         #else:
         modeS = (eigenvalC[i]+0.5) * np.log(eigenvalC[i]+0.5) - (eigenvalC[i]-0.5) * np.log(eigenvalC[i]-0.5)
         #modeS = (np.real(eigenvalC[i]+0.5)) * np.log(np.real(eigenvalC[i])+0.5) - (np.real(eigenvalC[i])-0.5) * np.log(np.real(eigenvalC[i])-0.5)
@@ -126,7 +126,7 @@ def matrix(t1, t2, N, N_sub, m1, m2):
 
 def fit_func(t, a, b):
     #return a * np.log((200/np.pi) * np.sin( np.pi * n_sub/200)) + b
-    return a * np.log( np.cosh(1/t) ) + b
+    return a * np.log( np.cosh(t) ) + b
 
 def plot(t_ini, t_fin, step, N, m1, m2): 
     
@@ -150,7 +150,7 @@ def plot(t_ini, t_fin, step, N, m1, m2):
     plt.plot(t_array, fit_func(t_array, *popt), label='fit: a=%6.4f, b=%6.4f' % tuple(popt), color='r')
 
     plt.title('N=' + str(N) + ', m1=' + str(m1) + ', m2=' + str(m2))
-    plt.xlabel('t+1i')
+    plt.xlabel('t')
     plt.ylabel('Pseudo Entropy')
     plt.legend()
     #plt.savefig('N'+str(N)+'_'+str(n_ini)+'n'+str(n_fin))
@@ -158,7 +158,7 @@ def plot(t_ini, t_fin, step, N, m1, m2):
     plt.show()
 
 
-plot(0, 30, 1, 20, 1.0*10**(-5), 1.0*10**(-5))
+plot(0, 40, 1, 20, 1.0*10**(-10), 1.0*10**(-10))
 
 def S(m1, m2, l):
     

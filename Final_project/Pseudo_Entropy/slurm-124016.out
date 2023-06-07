@@ -1,0 +1,129 @@
+/cluster/home/yhkuo/.conda/envs/compAstro/bin/python
+N=20_m1=1e-20_m2=1e-20
+Progress: 0/40
+Time used: 130.47090482711792 sec
+peak memory: 0.14154 MB
+Progress: 1/40
+Time used: 130.90438270568848 sec
+peak memory: 0.141944 MB
+Progress: 2/40
+Time used: 130.21326112747192 sec
+peak memory: 0.141944 MB
+Progress: 3/40
+Time used: 130.38154411315918 sec
+peak memory: 0.141944 MB
+Progress: 4/40
+Time used: 130.49142694473267 sec
+peak memory: 0.141944 MB
+Progress: 5/40
+Time used: 130.3016173839569 sec
+peak memory: 0.141944 MB
+Progress: 6/40
+Time used: 130.53495264053345 sec
+peak memory: 0.141944 MB
+Progress: 7/40
+Time used: 130.59203219413757 sec
+peak memory: 0.141944 MB
+Progress: 8/40
+Time used: 130.79228329658508 sec
+peak memory: 0.141944 MB
+Progress: 9/40
+Time used: 130.4857246875763 sec
+peak memory: 0.141944 MB
+Progress: 10/40
+Time used: 130.35187292099 sec
+peak memory: 0.141944 MB
+Progress: 11/40
+Time used: 130.55241703987122 sec
+peak memory: 0.141944 MB
+Progress: 12/40
+Time used: 130.29024529457092 sec
+peak memory: 0.141944 MB
+Progress: 13/40
+Time used: 130.36310982704163 sec
+peak memory: 0.141944 MB
+Progress: 14/40
+Time used: 130.28771805763245 sec
+peak memory: 0.141944 MB
+Progress: 15/40
+Time used: 130.4448869228363 sec
+peak memory: 0.141944 MB
+Progress: 16/40
+Time used: 130.30515837669373 sec
+peak memory: 0.141944 MB
+Progress: 17/40
+Time used: 102.51750183105469 sec
+peak memory: 0.141944 MB
+Progress: 18/40
+Time used: 130.7949149608612 sec
+peak memory: 0.141944 MB
+Progress: 19/40
+Time used: 130.6032304763794 sec
+peak memory: 0.141944 MB
+Progress: 20/40
+Time used: 121.45574712753296 sec
+peak memory: 0.14194800000000002 MB
+Progress: 21/40
+Time used: 130.34505891799927 sec
+peak memory: 0.14194800000000002 MB
+Progress: 22/40
+Time used: 123.47873902320862 sec
+peak memory: 0.14194800000000002 MB
+Progress: 23/40
+Time used: 124.93265628814697 sec
+peak memory: 0.14194800000000002 MB
+Progress: 24/40
+Time used: 130.35096406936646 sec
+peak memory: 0.14194800000000002 MB
+Progress: 25/40
+Time used: 130.3555884361267 sec
+peak memory: 0.14194800000000002 MB
+Progress: 26/40
+Time used: 130.435893535614 sec
+peak memory: 0.14194800000000002 MB
+Progress: 27/40
+Time used: 130.4378433227539 sec
+peak memory: 0.14194800000000002 MB
+Progress: 28/40
+Time used: 130.32904934883118 sec
+peak memory: 0.14194800000000002 MB
+Progress: 29/40
+Time used: 130.35564756393433 sec
+peak memory: 0.14194800000000002 MB
+Progress: 30/40
+Time used: 130.36436867713928 sec
+peak memory: 0.14194800000000002 MB
+Progress: 31/40
+Time used: 130.39104413986206 sec
+peak memory: 0.14194800000000002 MB
+Progress: 32/40
+Time used: 120.255286693573 sec
+peak memory: 0.14194800000000002 MB
+Progress: 33/40
+Time used: 121.67689824104309 sec
+peak memory: 0.14194800000000002 MB
+Progress: 34/40
+Time used: 130.42939376831055 sec
+peak memory: 0.14194800000000002 MB
+Progress: 35/40
+Time used: 129.05923557281494 sec
+peak memory: 0.14194800000000002 MB
+Progress: 36/40
+Time used: 130.32332587242126 sec
+peak memory: 0.14194800000000002 MB
+Progress: 37/40
+Time used: 124.61582589149475 sec
+peak memory: 0.14194800000000002 MB
+Progress: 38/40
+Time used: 130.37011408805847 sec
+peak memory: 0.14194800000000002 MB
+Progress: 39/40
+Time used: 130.20836973190308 sec
+peak memory: 0.14194800000000002 MB
+/cluster/home/yhkuo/Computational-Astrophysics-2022/Final_project/Pseudo_Entropy/QMulti2D.py:306: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+  plt.show()
+Progress: 40/40
+Time used: 130.11577701568604 sec
+peak memory: 0.14194800000000002 MB
+[ 1.12106342 16.29206392]
+Total Time used: 5271.971028089523 sec

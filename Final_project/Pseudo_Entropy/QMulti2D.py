@@ -261,7 +261,7 @@ def plot(N, t1, t2, step, m1, m2):
 
         start_time2 = time.time()
 
-        ps = Entropy(N, int(N/2), t1+i*step-10j, t1+i*step+10j, m1, m2)
+        ps = Entropy(N, int(N/2), t1+i*step-0j, t1+i*step+0j, m1, m2)
         
         #ps_iarray = np.append(ps_iarray, ps)
 
@@ -305,4 +305,4 @@ def plot(N, t1, t2, step, m1, m2):
 
     plt.show()
 
-plot(20, 0, 40, 1, 1.0*10**(-20), 1.0*10**(-20))
+plot(20, 0, 40, 1, 1.0*10**(-5), 1.0*10**(-5))
